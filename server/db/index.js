@@ -34,7 +34,7 @@ getMessages = function () {
     }
   });
 
-  connection.end();
+  // connection.end();
 };
 
 //GET ALL MESSAGES FROM DB
