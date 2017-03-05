@@ -4,7 +4,7 @@ var app = {
   //TODO: The current 'handleUsernameClick' function just toggles the class 'friend'
   //to all messages sent by the user
   // server: 'http://parse.CAMPUS.hackreactor.com/chatterbox/classes/messages',
-  server: 'http://127.0.0.1:8080',
+  server: 'http://127.0.0.1:8080/classes/messages',
   username: 'anonymous',
   roomname: 'lobby',
   lastMessageId: 0,
@@ -14,7 +14,7 @@ var app = {
   init: function() {
     // Get username
     app.username = window.location.search.substr(10);
-
+    console.log('this is a test from client app');
     // Cache jQuery selectors
     app.$message = $('#message');
     app.$chats = $('#chats');
@@ -28,12 +28,17 @@ var app = {
 
     // Fetch previous messages
     // app.startSpinner();
+
+    //THIS WAS FALSE
     app.fetch(false);
 
+
+
+    //THIS WAS UNCOMMENTED
     // Poll for new messages
-    setInterval(function() {
-      app.fetch(true);
-    }, 3000);
+    // setInterval(function() {
+    //   app.fetch(true);
+    // }, 3000);
   },
 
   send: function(message) {
@@ -43,13 +48,14 @@ var app = {
     $.ajax({
       url: app.server,
       type: 'POST',
-      data: message,
+      data: JSON.stringify(message),
+      contentType: 'application/json',
       success: function (data) {
         // Clear messages input
         app.$message.val('');
-
+        console.log('client post', data);
         // Trigger a fetch to update the messages, pass true to animate
-        app.fetch();
+        //app.fetch();
       },
       error: function (error) {
         console.error('chatterbox: Failed to send message', error);
@@ -65,6 +71,8 @@ var app = {
       contentType: 'application/json',
       success: function(data) {
         // Don't bother if we have nothing to work with
+
+        console.log('client get', data);
         if (!data.results || !data.results.length) { return; }
 
         // Store messages for caching later
@@ -218,7 +226,7 @@ var app = {
       text: app.$message.val(),
       roomname: app.roomname || 'lobby'
     };
-
+    console.log('client app submit', message);
     app.send(message);
 
     // Stop the form from submitting

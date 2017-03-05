@@ -12,8 +12,8 @@ var app = express();
 module.exports.app = app;
 
 // Set what we are listening on.
-app.set('port', 3000);
-
+app.set('port', 8080);
+console.log('we are here in app server');
 // Logging and parsing
 app.use(morgan('dev'));
 app.use(parser.json());
